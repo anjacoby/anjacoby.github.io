@@ -4,4 +4,7 @@ title: "Resume"
 
 ### Anya's Resume
 
+I am a second year MPH in the Epidemiology Department at the Columbia Mailman
+School of Public Health. 
+
 Here is my [resume](Anya_Jacoby_Resume.pdf).
