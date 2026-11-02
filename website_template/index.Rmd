@@ -4,4 +4,4 @@ title: "Anya's web page"
 
 ### I have a webpage!
 
-And I can put all kinds of stuff on it!
+Welcome to Anya Jacoby's website
