@@ -1,0 +1,63 @@
+---
+title: "Problem 2"
+---
+
+### HW Problem 2
+
+# Load libraries
+```{r message = FALSE}
+
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+
+```
+
+# Load data set
+```{r}
+data("instacart")
+
+instacart = instacart |> 
+  janitor::clean_names()
+```
+
+# Distribution of orders by hour of the dat for each day of the week
+
+```{r}
+instacart |> 
+  distinct(order_id, order_dow, order_hour_of_day) |> 
+  count(order_dow, order_hour_of_day) |> 
+  mutate(order_dow = factor(order_dow)) |> 
+  plot_ly(x = ~order_hour_of_day, y = ~n, color = ~order_dow,
+    type = "scatter", mode = "lines", colors = "viridis") |> 
+  layout(xaxis = list(title = "Hour of the Day"),
+         yaxis = list(title = "Number of Orders"),
+         legend = list(title = list(text ="Day of the Week")))
+```
+
+
+# Most reordered snacks
+```{r}
+
+instacart |> 
+  filter(department == "snacks") |> 
+  group_by(product_name) |> 
+  summarize(
+    n_orders = n(),
+    prop_reordered = mean(reordered)
+  ) |> 
+  filter(n_orders >= 500) |> 
+  slice_max(prop_reordered, n = 10) |> 
+  mutate(product_name = fct_reorder(product_name, prop_reordered)) |> 
+  plot_ly(x = ~prop_reordered, y = ~product_name, color = ~product_name,
+          type = "bar", orientation = "h", colors = "viridis") |> 
+  layout(xaxis = list(title = "Proportion of orders that were reorders"),
+         yaxis = list(title = "Snack Type"),
+         title = "Most Reordered Snacks (among snacks ordered at least 500 times)",
+         showlegend = FALSE)
+```
+
+
+
+
+
