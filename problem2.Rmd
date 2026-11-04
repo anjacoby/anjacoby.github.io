@@ -4,6 +4,8 @@ title: "Problem 2"
 
 ### HW Problem 2
 
+# Data and Libraries
+
 load libraries
 ```{r message=FALSE}
 
@@ -25,10 +27,16 @@ instacart = instacart |>
 # What is the distribution of orders by hour of the day for each day of the week
 
 ```{r}
+# Couldn't find anythign in the code that specified which numbers corresponded 
+# with each day of the week, so I have assumed that 0 = Sunday to 6 = Saturday
+
 instacart |> 
   distinct(order_id, order_dow, order_hour_of_day) |> 
   count(order_dow, order_hour_of_day) |> 
-  mutate(order_dow = factor(order_dow)) |> 
+  mutate(order_dow = factor(order_dow,
+                            levels = 0:6,
+                            labels = c("Sunday", "Monday", "Tuesday", "Wednesday",
+                                       "Thursday", "Friday", "Saturday"))) |> 
   plot_ly(x = ~order_hour_of_day, y = ~n, color = ~order_dow,
     type = "scatter", mode = "lines", colors = "viridis") |> 
   layout(xaxis = list(title = "Hour of the Day"),
@@ -71,7 +79,7 @@ instacart |>
   drop_na(days_since_prior_order) |> 
   sample_n(10000) |> 
   plot_ly(x = ~days_since_prior_order, y = ~n_items, type = "box",
-          mode = "markers", alpha = .5, colors = "viridis") |> 
+          alpha = .5, colors = "viridis") |> 
   layout(xaxis = list(title = "Days Since Prior Order (Capped at 30)"),
          yaxis = list(title = "Number of Items in Order"),
          title = "Order Size vs. Number of Days Since Prior Order <br><sup>Random sample of 10,000 orders</sup>")

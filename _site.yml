@@ -14,7 +14,7 @@ navbar:
     - icon: fa-github fa-lg
       href: http://github.com/anjacoby/
     - icon: fa-linkedin fa-lg
-      href: www.linkedin.com/in/anya-jacoby-4319051b5
+      href: https://www.linkedin.com/in/anya-jacoby-4319051b5
 output:
   html_document:
     theme: cerulean 
