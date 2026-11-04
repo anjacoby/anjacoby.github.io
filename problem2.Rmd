@@ -27,8 +27,8 @@ instacart = instacart |>
 # What is the distribution of orders by hour of the day for each day of the week
 
 ```{r}
-# Couldn't find anythign in the code that specified which numbers corresponded 
-# with each day of the week, so I have assumed that 0 = Sunday to 6 = Saturday
+# Couldn't find anything in the data description that specified which numbers corresponded 
+# with each day of the week, so I have assumed that 0 = Sunday to 6 = Saturday for labelling purposes
 
 instacart |> 
   distinct(order_id, order_dow, order_hour_of_day) |> 
