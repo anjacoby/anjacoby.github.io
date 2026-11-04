@@ -4,8 +4,8 @@ title: "Problem 2"
 
 ### HW Problem 2
 
-# Load libraries
-```{r message = FALSE}
+load libraries
+```{r message=FALSE}
 
 library(tidyverse)
 library(p8105.datasets)
@@ -13,15 +13,16 @@ library(plotly)
 
 ```
 
-# Load data set
+load data set
 ```{r}
 data("instacart")
 
 instacart = instacart |> 
   janitor::clean_names()
+
 ```
 
-# Distribution of orders by hour of the dat for each day of the week
+# Distribution of orders by hour of the day for each day of the week
 
 ```{r}
 instacart |> 
@@ -32,7 +33,8 @@ instacart |>
     type = "scatter", mode = "lines", colors = "viridis") |> 
   layout(xaxis = list(title = "Hour of the Day"),
          yaxis = list(title = "Number of Orders"),
-         legend = list(title = list(text ="Day of the Week")))
+         legend = list(title = list(text ="Day of the Week")),
+         title = "Instacart Orders by Hour For Each Day of the Week")
 ```
 
 
@@ -53,7 +55,7 @@ instacart |>
           type = "bar", orientation = "h", colors = "viridis") |> 
   layout(xaxis = list(title = "Proportion of orders that were reorders"),
          yaxis = list(title = "Snack Type"),
-         title = "Most Reordered Snacks (among snacks ordered at least 500 times)",
+         title = "Most Reordered Snacks (among snacks ordered at least 500 times on Instacart)",
          showlegend = FALSE)
 ```
 
