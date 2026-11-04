@@ -22,7 +22,7 @@ instacart = instacart |>
 
 ```
 
-# Distribution of orders by hour of the day for each day of the week
+# What is the distribution of orders by hour of the day for each day of the week
 
 ```{r}
 instacart |> 
@@ -38,7 +38,7 @@ instacart |>
 ```
 
 
-# Most reordered snacks
+# What are the most reordered snacks?
 ```{r}
 
 instacart |> 
@@ -58,6 +58,31 @@ instacart |>
          title = "Most Reordered Snacks (among snacks ordered at least 500 times on Instacart)",
          showlegend = FALSE)
 ```
+
+# Does order size differ by amount of days since last order?
+
+```{r}
+
+set.seed(1)
+
+instacart |> 
+  group_by(order_id, days_since_prior_order) |> 
+  summarize(n_items = n(), .groups = "drop") |> 
+  drop_na(days_since_prior_order) |> 
+  sample_n(10000) |> 
+  plot_ly(x = ~days_since_prior_order, y = ~n_items, type = "box",
+          mode = "markers", alpha = .5, colors = "viridis") |> 
+  layout(xaxis = list(title = "Days Since Prior Order (Capped at 30)"),
+         yaxis = list(title = "Number of Items in Order"),
+         title = "Order Size vs. Number of Days Since Prior Order <br><sup>Random sample of 10,000 orders</sup>")
+```
+
+
+
+
+
+
+
 
 
 
