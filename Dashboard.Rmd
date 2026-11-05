@@ -1,0 +1,84 @@
+---
+title: "Instacart Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(p8105.datasets)
+library(plotly)
+
+data("instacart")
+
+instacart = instacart |> 
+  janitor::clean_names()
+```
+
+Column {data-width=650}
+----------------------------------------------------------------------
+### What is the distribution of orders by hour of the day for each day of the week
+
+```{r}
+# Couldn't find anything in the data description that specified which numbers corresponded 
+# with each day of the week, so I have assumed that 0 = Sunday to 6 = Saturday for labelling purposes
+
+instacart |> 
+  distinct(order_id, order_dow, order_hour_of_day) |> 
+  count(order_dow, order_hour_of_day) |> 
+  mutate(order_dow = factor(order_dow,
+                            levels = 0:6,
+                            labels = c("Sunday", "Monday", "Tuesday", "Wednesday",
+                                       "Thursday", "Friday", "Saturday"))) |> 
+  plot_ly(x = ~order_hour_of_day, y = ~n, color = ~order_dow,
+    type = "scatter", mode = "lines", colors = "viridis") |> 
+  layout(xaxis = list(title = "Hour of the Day"),
+         yaxis = list(title = "Number of Orders"),
+         legend = list(title = list(text ="Day of the Week")),
+         title = "Instacart Orders by Hour For Each Day of the Week")
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+###  What are the most reordered snacks?
+
+```{r}
+instacart |> 
+  filter(department == "snacks") |> 
+  group_by(product_name) |> 
+  summarize(
+    n_orders = n(),
+    prop_reordered = mean(reordered)
+  ) |> 
+  filter(n_orders >= 500) |> 
+  slice_max(prop_reordered, n = 10) |> 
+  mutate(product_name = fct_reorder(product_name, prop_reordered)) |> 
+  plot_ly(x = ~prop_reordered, y = ~product_name, color = ~product_name,
+          type = "bar", orientation = "h", colors = "viridis") |> 
+  layout(xaxis = list(title = "Proportion of orders that were reorders"),
+         yaxis = list(title = "Snack Type"),
+         title = "Most Reordered Snacks (among snacks ordered at least 500 times on Instacart)",
+         showlegend = FALSE)
+```
+
+### Does order size differ by amount of days since last order?
+
+```{r}
+set.seed(1)
+
+instacart |> 
+  group_by(order_id, days_since_prior_order) |> 
+  summarize(n_items = n(), .groups = "drop") |> 
+  drop_na(days_since_prior_order) |> 
+  sample_n(10000) |> 
+  plot_ly(x = ~days_since_prior_order, y = ~n_items, type = "box",
+          alpha = .5, colors = "viridis") |> 
+  layout(xaxis = list(title = "Days Since Prior Order (Capped at 30)"),
+         yaxis = list(title = "Number of Items in Order"),
+         title = "Order Size vs. Number of Days Since Prior Order <br><sup>Random sample of 10,000 orders</sup>")
+```
+

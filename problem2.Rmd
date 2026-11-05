@@ -16,6 +16,7 @@ load libraries
 library(tidyverse)
 library(p8105.datasets)
 library(plotly)
+library(flexdashboard)
 
 ```
 
