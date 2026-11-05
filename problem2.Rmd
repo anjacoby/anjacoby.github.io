@@ -1,5 +1,9 @@
 ---
 title: "Problem 2"
+output:
+flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
 ---
 
 ### HW Problem 2
@@ -24,7 +28,7 @@ instacart = instacart |>
 
 ```
 
-# What is the distribution of orders by hour of the day for each day of the week
+### What is the distribution of orders by hour of the day for each day of the week
 
 ```{r}
 # Couldn't find anything in the data description that specified which numbers corresponded 
@@ -46,7 +50,7 @@ instacart |>
 ```
 
 
-# What are the most reordered snacks?
+### What are the most reordered snacks?
 ```{r}
 
 instacart |> 
